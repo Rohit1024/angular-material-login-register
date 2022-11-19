@@ -3,21 +3,39 @@
     <mat-card-title style="text-align:center; margin: 10px;"
       >LogIn / Register</mat-card-title
     >
-    <mat-tab-group mat-stretch-tabs class="example-stretched-tabs">
+    <mat-tab-group
+      mat-stretch-tabs
+      dynamicHeight
+      class="example-stretched-tabs"
+    >
       <mat-tab label="LogIn">
         <mat-card-content>
-          <form action="">
+          <form [formGroup]="loginForm">
             <mat-form-field>
               <input
                 matInput
                 placeholder="Email"
                 required
                 name="email"
-                ngModel
-                #email="ngModel"
+                formControlName="email"
               />
-              <mat-error *ngIf="email.invalid">Email is required</mat-error>
               <mat-icon matSuffix>email</mat-icon>
+              <mat-error
+                *ngIf="
+                  loginForm.get('email').touched &&
+                  loginForm.get('email').errors &&
+                  loginForm.get('email').hasError('required')
+                "
+                >Email is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  loginForm.get('email').touched &&
+                  loginForm.get('email').errors &&
+                  loginForm.get('email').hasError('email')
+                "
+                >Email should be of Valid Format</mat-error
+              >
             </mat-form-field>
             <mat-form-field>
               <input
@@ -27,19 +45,34 @@
                 required
                 minlength="6"
                 name="password"
-                ngModel
-                #password="ngModel"
+                formControlName="password"
               />
-              <mat-error *ngIf="password.errors && password.errors.required">
-                Password is required
-              </mat-error>
-              <mat-error *ngIf="password.errors && password.errors.minlength">
-                Password must be of length 6
-              </mat-error>
+              <mat-error
+                *ngIf="
+                  loginForm.get('password').touched &&
+                  loginForm.get('password').errors &&
+                  loginForm.get('password').hasError('required')
+                "
+                >Password is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  loginForm.get('password').touched &&
+                  loginForm.get('password').errors &&
+                  loginForm.get('password').hasError('minlength')
+                "
+                >Password must be of length 6</mat-error
+              >
               <mat-icon matSuffix>lock</mat-icon>
             </mat-form-field>
             <mat-checkbox>Remember Me!</mat-checkbox>
-            <button mat-raised-button color="primary" class="login-button">
+            <button
+              mat-raised-button
+              color="primary"
+              class="login-button"
+              [disabled]="!loginForm.valid"
+              (click)="openSnackBar(loginMessage, 'Dismiss')"
+            >
               LogIn
             </button>
 
@@ -51,20 +84,24 @@
       </mat-tab>
       <mat-tab label="Register">
         <mat-card-content>
-          <form action="">
+          <form [formGroup]="registerForm">
             <mat-form-field>
               <input
                 matInput
                 placeholder="User Name"
                 required
                 name="username"
-                ngModel
-                #username="ngModel"
+                formControlName="userName"
               />
               <mat-icon matSuffix>person</mat-icon>
-              <mat-error *ngIf="username.invalid">
-                Username is required
-              </mat-error>
+              <mat-error
+                *ngIf="
+                  registerForm.get('userName').touched &&
+                  registerForm.get('userName').errors &&
+                  registerForm.get('userName').hasError('required')
+                "
+                >User Name is required</mat-error
+              >
             </mat-form-field>
             <mat-form-field>
               <input
@@ -72,70 +109,115 @@
                 placeholder="Email"
                 required
                 name="email"
-                ngModel
-                #email="ngModel"
+                formControlName="email"
               />
-              <mat-error *ngIf="email.invalid">Email is required</mat-error>
               <mat-icon matSuffix>email</mat-icon>
+              <mat-error
+                *ngIf="
+                  registerForm.get('email').touched &&
+                  registerForm.get('email').errors &&
+                  registerForm.get('email').hasError('required')
+                "
+                >Email is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  registerForm.get('email').touched &&
+                  registerForm.get('email').errors &&
+                  registerForm.get('email').hasError('email')
+                "
+                >Email should be of Valid Format</mat-error
+              >
             </mat-form-field>
             <mat-form-field>
               <input
                 matInput
                 placeholder="Password"
-                [type]="hide ? 'password' : 'text'"
+                [type]="passwordHide ? 'password' : 'text'"
                 required
                 minlength="6"
                 name="password"
-                ngModel
-                #password="ngModel"
+                formControlName="password"
               />
               <button
                 mat-icon-button
                 matSuffix
-                (click)="hide = !hide"
+                (click)="passwordHide = !passwordHide"
                 [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide"
+                [attr.aria-pressed]="passwordHide"
               >
-                <mat-icon class="scale" *ngIf="hide">visibility_off</mat-icon>
-                <mat-icon class="scale" *ngIf="!hide">visibility</mat-icon>
+                <mat-icon matSuffix class="scale" *ngIf="passwordHide"
+                  >visibility_off</mat-icon
+                >
+                <mat-icon matSuffix class="scale" *ngIf="!passwordHide"
+                  >visibility</mat-icon
+                >
               </button>
-              <mat-error *ngIf="password.errors && password.errors.required">
-                Password is required
-              </mat-error>
-              <mat-error *ngIf="password.errors && password.errors.minlength">
-                Password must be of length 6
-              </mat-error>
+              <mat-error
+                *ngIf="
+                  registerForm.get('password').touched &&
+                  registerForm.get('password').errors &&
+                  registerForm.get('password').hasError('required')
+                "
+                >Password is required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  registerForm.get('password').touched &&
+                  registerForm.get('password').errors &&
+                  registerForm.get('password').hasError('minlength')
+                "
+                >Password must be of length 6</mat-error
+              >
               <!-- <mat-icon matSuffix>lock</mat-icon> -->
             </mat-form-field>
             <mat-form-field>
               <input
                 matInput
                 placeholder="Confirm Password"
-                [type]="hide2 ? 'password' : 'text'"
+                [type]="confirmPasswordHide ? 'password' : 'text'"
                 required
-                minlength="6"
                 name="repassword"
-                ngModel
-                #repassword="ngModel"
+                formControlName="confirmPassword"
               />
               <button
                 mat-icon-button
                 matSuffix
-                (click)="hide2 = !hide2"
+                (click)="confirmPasswordHide = !confirmPasswordHide"
                 [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide2"
+                [attr.aria-pressed]="confirmPasswordHide"
               >
-                <mat-icon class="scale" *ngIf="hide2">visibility_off</mat-icon>
-                <mat-icon class="scale" *ngIf="!hide2">visibility</mat-icon>
+                <mat-icon matSuffix class="scale" *ngIf="confirmPasswordHide"
+                  >visibility_off</mat-icon
+                >
+                <mat-icon matSuffix class="scale" *ngIf="!confirmPasswordHide"
+                  >visibility</mat-icon
+                >
               </button>
               <mat-error
-                *ngIf="repassword.errors && repassword.errors.required"
+                *ngIf="
+                  registerForm.get('confirmPassword').touched &&
+                  registerForm.get('confirmPassword').errors &&
+                  registerForm.get('confirmPassword').hasError('required')
+                "
+                >Confirm Password is required</mat-error
               >
-                Confirm Password is required
-              </mat-error>
+              <mat-error
+                *ngIf="
+                  registerForm.get('confirmPassword').touched &&
+                  registerForm.get('confirmPassword').hasError('matching')
+                "
+                >Passwords should match</mat-error
+              >
               <!-- <mat-icon matSuffix>lock</mat-icon> -->
             </mat-form-field>
-            <button mat-raised-button color="primary" class="login-button">
+            <button
+              mat-raised-button
+              color="primary"
+              class="login-button"
+              [disabled]="!registerForm.valid"
+              (click)="openSnackBar(registerMessage, 'Dismiss')"
+            >
               Register
             </button>
           </form>
