@@ -1,5 +1,6 @@
 mat-card {
   width: 30%;
+  min-width: 400px;
   margin: 10% auto;
   border-radius: 10px;
 }
@@ -27,5 +28,4 @@ mat-card-content {
 
 .scale {
   transform: scale(1.6);
-  /* padding-bottom: 10px; */
 }

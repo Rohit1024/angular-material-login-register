@@ -1,0 +1,10 @@
+.login-button {
+  margin-top: 20px;
+  display: block;
+  width: 80%;
+  margin: 20px auto;
+}
+
+.scale {
+  transform: scale(1.6);
+}
