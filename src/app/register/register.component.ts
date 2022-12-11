@@ -12,7 +12,7 @@ export class RegisterComponent {
   registerMessage = 'Registered Successfully';
   passwordHide = true;
   confirmPasswordHide = true;
-  
+
   registerForm = this.fb.group(
     {
       email: ['', [Validators.required, Validators.email]],
@@ -29,6 +29,15 @@ export class RegisterComponent {
     private fb: NonNullableFormBuilder,
     private snackBar: MatSnackBar
   ) {}
+
+  /* Get errors */
+  public handleErrorRegister = (controlName: string, errorName: string) => {
+    return (
+      this.registerForm.get(controlName).touched &&
+      this.registerForm.get(controlName).errors &&
+      this.registerForm.get(controlName).hasError(errorName)
+    );
+  };
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action);

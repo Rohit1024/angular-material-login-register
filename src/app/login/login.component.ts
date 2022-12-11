@@ -20,6 +20,15 @@ export class LoginComponent {
     private snackBar: MatSnackBar
   ) {}
 
+  /* Get errors */
+  public handleErrorLogin = (controlName: string, errorName: string) => {
+    return (
+      this.loginForm.get(controlName).touched &&
+      this.loginForm.get(controlName).errors &&
+      this.loginForm.get(controlName).hasError(errorName)
+    );
+  };
+
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action);
   }

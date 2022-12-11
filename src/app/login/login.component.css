@@ -4,3 +4,12 @@
   width: 80%;
   margin: 20px auto;
 }
+mat-form-field,
+mat-checkbox {
+  width: 80%;
+  display: block;
+  margin: 10px auto;
+}
+mat-card-content {
+  margin-top: 20px;
+}
